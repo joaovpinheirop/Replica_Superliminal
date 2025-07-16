@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class ControlerObjetos : MonoBehaviour
 {
     public RayCastDetector rayCastDetector;
+    ItemScale scale;
     public float tamanho;
 
 
@@ -12,11 +13,12 @@ public class ControlerObjetos : MonoBehaviour
     void Start()
     {
         rayCastDetector = GetComponent<RayCastDetector>();
+        refSegurandoObjeto.transform.localPosition = Camera.main.transform.forward * 2;
     }
 
 
- // Update is called once per frame
- void FixedUpdate()
+    // Update is called once per frame
+    void FixedUpdate()
     {
         MoveItem();
     }
@@ -25,6 +27,8 @@ public class ControlerObjetos : MonoBehaviour
     {
         // item que vai ser movimentado
         GameObject item = rayCastDetector.CheckHit().collider.gameObject;
+        
+        scale = item.GetComponent<ItemScale>();
 
         // Obter RigidyBody do item que vai ser movimentado
         Rigidbody rb = item.GetComponent<Rigidbody>();
@@ -34,12 +38,12 @@ public class ControlerObjetos : MonoBehaviour
             rb.useGravity = false;
 
             //seguir minha referencia de item
-            rb.transform.position = Vector3.Lerp(rb.transform.position, refSegurandoObjeto.position, Time.deltaTime * 200f);
+            rb.transform.position = Vector3.Lerp(rb.transform.position , refSegurandoObjeto.position, Time.deltaTime * 200f);
         }
         else
         {
             // ativar gravidade
             rb.useGravity = true;
-         }
+        }
     }
 }

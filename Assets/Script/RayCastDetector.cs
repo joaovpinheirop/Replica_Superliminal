@@ -10,15 +10,21 @@ public class RayCastDetector : MonoBehaviour
 
     [Tooltip("Layers a detectar")]
     public LayerMask layerMask;
+    public LayerMask layerMaskScale;
 
     // Guarda a última informação de colisão
     private RaycastHit _lastHitInfo;
     public RaycastHit LastHitInfo => _lastHitInfo;
- // public Vector3 OffsetRay;
+    // public Vector3 OffsetRay;
+
+     // Guarda a última informação de colisão
+    private RaycastHit _hit;
+    public RaycastHit lasthit => _hit;
+    // public Vector3 OffsetRay;
 
 
 
- public RaycastHit CheckHit()
+    public RaycastHit CheckHit()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -30,13 +36,16 @@ public class RayCastDetector : MonoBehaviour
                 var obj = _lastHitInfo.collider.gameObject;
                 if (obj.transform.childCount == 0)
                 {
-               Debug.DrawLine(ray.origin, _lastHitInfo.point);
+                    Debug.DrawLine(ray.origin, _lastHitInfo.point);
                     return _lastHitInfo;
                 }
             }
         }
 
+
         Debug.Log(LastHitInfo.point.magnitude);
         return LastHitInfo;
     }
+    
+    
 }
