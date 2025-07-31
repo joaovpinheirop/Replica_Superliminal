@@ -1,13 +1,14 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class ControlerObjetos : MonoBehaviour
 {
     public RayCastDetector rayCastDetector;
-    ItemScale scale;
-    public float tamanho;
-
-
+    public Vector3 currentScale;
+    private GameObject itemAtual = null;
+    public Vector3 escalaBase = Vector3.one;
+    public float distanciaAntiga;
     public Transform refSegurandoObjeto;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -16,34 +17,66 @@ public class ControlerObjetos : MonoBehaviour
         refSegurandoObjeto.transform.localPosition = Camera.main.transform.forward * 2;
     }
 
-
-    // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
+        rayCastDetector.CheckHitRef();
         MoveItem();
     }
 
     void MoveItem()
     {
         // item que vai ser movimentado
-        GameObject item = rayCastDetector.CheckHit().collider.gameObject;
-        
-        scale = item.GetComponent<ItemScale>();
+        RaycastHit  hit = rayCastDetector.CheckHit();
+        if (hit.collider == null) return ;
 
         // Obter RigidyBody do item que vai ser movimentado
+        GameObject item = hit.collider.gameObject;
         Rigidbody rb = item.GetComponent<Rigidbody>();
-        if (item != null && Input.GetMouseButton(0))
+        if (rb == null) return;
+
+        if (Input.GetMouseButtonDown(0))
         {
-            // desativar gravidade 
-            rb.useGravity = false;
+            
+            itemAtual = item;
+
+            
 
             //seguir minha referencia de item
-            rb.transform.position = Vector3.Lerp(rb.transform.position , refSegurandoObjeto.position, Time.deltaTime * 200f);
+            itemAtual.transform.SetParent(refSegurandoObjeto);
+
+            // desativar gravidade 
+            rb.useGravity = false;
+            rb.linearVelocity = Vector3.zero;
+            rb.freezeRotation = true;
         }
-        else
+
+        if (Input.GetMouseButton(0) && item == itemAtual)
+        { 
+
+            // Sempre que pegar, atualiza a escala base com a escala atual
+            escalaBase = itemAtual.transform.localScale;
+            
+            //Obter distancia entre player e item;
+            float distancia = Vector3.Distance(transform.position, itemAtual.transform.position);
+
+            //Obter distancia entre player e item;
+            itemAtual.transform.localScale = escalaBase *  distancia * 0.1f;
+           
+            // Mover item 
+            itemAtual.transform.position = refSegurandoObjeto.transform.position;
+        }
+
+        if(Input.GetMouseButtonUp(0) && item == itemAtual)
         {
+            
+            distanciaAntiga = Vector3.Distance(transform.position, itemAtual.transform.position);
             // ativar gravidade
+            item.transform.SetParent(null);
             rb.useGravity = true;
+            rb.freezeRotation = false;
+
+            //Ignorar itematual
+            itemAtual = null;
         }
     }
 }

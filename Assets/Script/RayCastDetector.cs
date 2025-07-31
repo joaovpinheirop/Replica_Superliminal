@@ -1,51 +1,22 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class RayCastDetector : MonoBehaviour
 {
-
-    // === RAYCAST ===
-    [Header("Configuração do Detector")]
-    [Tooltip("Alcance máximo do raycast")]
-    public float maxDistance = 1f;
-
-    [Tooltip("Layers a detectar")]
-    public LayerMask layerMask;
-    public LayerMask layerMaskScale;
-
-    // Guarda a última informação de colisão
-    private RaycastHit _lastHitInfo;
-    public RaycastHit LastHitInfo => _lastHitInfo;
-    // public Vector3 OffsetRay;
-
-     // Guarda a última informação de colisão
-    private RaycastHit _hit;
-    public RaycastHit lasthit => _hit;
-    // public Vector3 OffsetRay;
-
-
+    public LayerMask detectionMask;
 
     public RaycastHit CheckHit()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out _lastHitInfo, maxDistance, layerMask))
+        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f, detectionMask))
         {
-            // Se for um carrinho ver se tem algum item dentro
-            if (_lastHitInfo.collider.CompareTag("ItemMove"))
-            {
-                var obj = _lastHitInfo.collider.gameObject;
-                if (obj.transform.childCount == 0)
-                {
-                    Debug.DrawLine(ray.origin, _lastHitInfo.point);
-                    return _lastHitInfo;
-                }
-            }
+            return hit;
         }
-
-
-        Debug.Log(LastHitInfo.point.magnitude);
-        return LastHitInfo;
+        return new RaycastHit();
     }
-    
-    
+
+    public void CheckHitRef()
+    {
+        // Se não usar mais o refSegurandoObjeto, pode remover
+    }
 }
