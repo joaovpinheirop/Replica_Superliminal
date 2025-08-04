@@ -227,6 +227,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &69420145 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7773249142623786738, guid: b4002389196ad9843bafb65478d89f79, type: 3}
+  m_PrefabInstance: {fileID: 2052617374}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d61599ca52383c4fabdfc2fc8fff1a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &121550673
 GameObject:
   m_ObjectHideFlags: 0
@@ -1065,6 +1076,10 @@ PrefabInstance:
       propertyPath: distanceMin
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1915241921784894733, guid: b4002389196ad9843bafb65478d89f79, type: 3}
+      propertyPath: rayCastDetector
+      value: 
+      objectReference: {fileID: 69420145}
     - target: {fileID: 3320411439321403731, guid: b4002389196ad9843bafb65478d89f79, type: 3}
       propertyPath: m_LocalPosition.x
       value: 18.736118
@@ -1111,7 +1126,7 @@ PrefabInstance:
       objectReference: {fileID: 2052617375}
     - target: {fileID: 7773249142623786738, guid: b4002389196ad9843bafb65478d89f79, type: 3}
       propertyPath: recuo
-      value: 0.2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7773249142623786738, guid: b4002389196ad9843bafb65478d89f79, type: 3}
       propertyPath: maxDistance
@@ -1121,6 +1136,10 @@ PrefabInstance:
       propertyPath: refSegurandoObjeto
       value: 
       objectReference: {fileID: 998186540}
+    - target: {fileID: 7773249142623786738, guid: b4002389196ad9843bafb65478d89f79, type: 3}
+      propertyPath: detectionMask.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
     - target: {fileID: 7773249142623786738, guid: b4002389196ad9843bafb65478d89f79, type: 3}
       propertyPath: layerMaskScale.m_Bits
       value: 119

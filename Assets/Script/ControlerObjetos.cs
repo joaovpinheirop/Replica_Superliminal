@@ -10,6 +10,12 @@ public class ControlerObjetos : MonoBehaviour
     public Vector3 escalaBase = Vector3.one;
     public float distanciaAntiga;
     public Transform refSegurandoObjeto;
+
+
+
+    public Vector3 positionOriginal;
+    public Vector3 currentPosition;
+    public float distanciaentrePontos;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -38,11 +44,12 @@ public class ControlerObjetos : MonoBehaviour
         {
             
             itemAtual = item;
-
-            
-
+            // Sempre que pegar, atualiza a escala base com a escala atual
+            escalaBase = itemAtual.transform.localScale;    
             //seguir minha referencia de item
             itemAtual.transform.SetParent(refSegurandoObjeto);
+
+            positionOriginal = itemAtual.transform.position;
 
             // desativar gravidade 
             rb.useGravity = false;
@@ -52,16 +59,20 @@ public class ControlerObjetos : MonoBehaviour
 
         if (Input.GetMouseButton(0) && item == itemAtual)
         { 
-
-            // Sempre que pegar, atualiza a escala base com a escala atual
-            escalaBase = itemAtual.transform.localScale;
-            
             //Obter distancia entre player e item;
             float distancia = Vector3.Distance(transform.position, itemAtual.transform.position);
+            float distanciaComp =Vector3.Distance(transform.position,  positionOriginal);
+            
+            currentPosition = itemAtual.transform.position;
+            distanciaentrePontos = Vector3.Distance(currentPosition, positionOriginal);
 
+            if (distancia < distanciaComp )
+            {
+                distanciaentrePontos *= -1;
+            }
+ 
             //Obter distancia entre player e item;
             itemAtual.transform.localScale = escalaBase *  distancia * 0.1f;
-           
             // Mover item 
             itemAtual.transform.position = refSegurandoObjeto.transform.position;
         }
